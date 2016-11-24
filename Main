@@ -1,0 +1,50 @@
+from sympy import *
+def fx(n,x):
+    y=x**n
+    return y
+
+def fpx(m,k):
+    x = symbols('x')
+    fpiex=(x**m).diff()
+    yp=fpiex.evalf(subs={x:k},n=20)
+    
+    return yp
+'''错误记录，计算曲线长度部分证实无误，但总下滑时间会随着分割份数增加而增加，
+暂时无法找出问题，猜测应当与时间近似的方法有关，但毫无头绪'''
+def main():
+    
+    len=1#定义域长度
+    sp=10000#分成的份数
+    n=2
+    s=0
+    t=0
+    g=9.8
+    xsp=len/sp#定义域单位份数长度
+    for i in range(1,sp+1):#在1到10000里循环计算累加长度
+        
+        y1=fx(n,i*xsp)
+        y0=fx(n,(i-1)*xsp)
+        #print('y1=',y1,"     ",'y0=',y0)
+        yn=y1-y0
+        Ln=((xsp**2)+(yn**2))**(0.5)
+        s = s +Ln#此处计算曲线长度无误，但之后计算时间与加速度部分存在位置错误
+        ypx=fpx(n,(i*xsp-xsp/3))
+        #print('ypx=',ypx)
+        a=9.8*(1 - 1/(1+(ypx)**2))**(0.5)
+        t = t + ((2*Ln)/a)**(0.5)
+        #print('a=',a)
+        #print('tt=',t)
+        #print(i)
+        #print('a=',a)
+    print('s=',s)
+    print('T=',t)
+    #fpx=(x**n).diff()
+    #print("f'x=",fpx)
+    #fpx=
+    
+#main()
+
+#print(fpx(2,1))
+main()
+
+    
